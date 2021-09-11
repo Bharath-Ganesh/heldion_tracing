@@ -1,5 +1,5 @@
 
-package com.oracle.zipkin.tracing;
+package com.oracle.jager.tracing;
 
 import io.helidon.common.LogConfig;
 import io.helidon.common.reactive.Single;
@@ -11,6 +11,7 @@ import io.helidon.metrics.MetricsSupport;
 import io.helidon.tracing.TracerBuilder;
 import io.helidon.webserver.Routing;
 import io.helidon.webserver.WebServer;
+import io.helidon.webserver.WebTracingConfig;
 
 /**
  * The application main class.
@@ -25,6 +26,7 @@ public final class Main {
 
     /**
      * Application main entry point.
+     *
      * @param args command line arguments.
      */
     public static void main(final String[] args) {
@@ -33,6 +35,7 @@ public final class Main {
 
     /**
      * Start the server.
+     *
      * @return the created {@link WebServer} instance
      */
     static Single<WebServer> startServer() {
@@ -54,9 +57,9 @@ public final class Main {
         // Try to start the server. If successful, print some info and arrange to
         // print a message at shutdown. If unsuccessful, print the exception.
         webserver.thenAccept(ws -> {
-                    System.out.println("WEB server is up! http://localhost:" + ws.port() + "/greet");
-                    ws.whenShutdown().thenRun(() -> System.out.println("WEB server is DOWN. Good bye!"));
-                })
+            System.out.println("WEB server is up! http://localhost:" + ws.port() + "/greet");
+            ws.whenShutdown().thenRun(() -> System.out.println("WEB server is DOWN. Good bye!"));
+        })
                 .exceptionallyAccept(t -> {
                     System.err.println("Startup failed: " + t.getMessage());
                     t.printStackTrace(System.err);
@@ -68,8 +71,8 @@ public final class Main {
     /**
      * Creates new {@link Routing}.
      *
-     * @return routing configured with JSON support, a health check, and a service
      * @param config configuration of this server
+     * @return routing configured with JSON support, a health check, and a service
      */
     private static Routing createRouting(Config config) {
 
@@ -81,7 +84,8 @@ public final class Main {
 
         return Routing.builder()
                 .register(health)                   // Health at "/health"
-                .register(metrics)                  // Metrics at "/metrics"
+                .register(metrics)
+                .register(WebTracingConfig.create(config.get("tracing")))// Metrics at "/metrics"
                 .register("/greet", greetService)
                 .build();
     }

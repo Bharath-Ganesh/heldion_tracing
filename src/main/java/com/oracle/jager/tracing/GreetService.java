@@ -1,5 +1,5 @@
 
-package com.oracle.zipkin.tracing;
+package com.oracle.jager.tracing;
 
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;

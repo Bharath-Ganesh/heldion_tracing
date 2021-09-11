@@ -1,9 +1,24 @@
 app:
-  greeting: "Hello From SE-2"
-
-tracing:
-  service: "zipkin_tracing_service"
+  greeting: "Hello Ciao"
 
 server:
-  port: 8082
+  port: 8080
   host: 0.0.0.0
+
+tracing:
+  service: "jaegerobservability"
+  protocol: "udp"     # JAEGER_ENDPOINT (if not udp, http is expected and endpoint is filled)
+  host: "localhost"   # JAEGER_ENDPOINT
+  port: 6831        # JAEGER_ENDPOINT
+  path: "/api/traces"   # JAEGER_ENDPOINT
+  token: "token"        # JAEGER_AUTH_TOKEN
+  # Either token or username/password
+  #username:  "user"     # JAEGER_USER
+  #password: "pass"      # JAEGER_PASSWORD
+  propagation: "jaeger" # JAEGER_PROPAGATION either "jaeger" or "b3"
+  log-spans: false      # JAEGER_REPORTER_LOG_SPANS
+  max-queue-size: 42    # JAEGER_REPORTER_MAX_QUEUE_SIZE
+  flush-interval-ms: 10001 # JAEGER_REPORTER_FLUSH_INTERVAL
+  sampler-type: "remote"# JAEGER_SAMPLER_TYPE (https://www.jaegertracing.io/docs/latest/sampling/#client-sampling-configuration)
+  sampler-param: 0.5    # JAEGER_SAMPLER_PARAM (number)
+  sampler-manager: "localhost:47877" # JAEGER_SAMPLER_MANAGER_HOST_PORT
