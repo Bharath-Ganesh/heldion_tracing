@@ -1,0 +1,5 @@
+com\oracle\books\dto\Books.class
+com\oracle\jaeger\tracing\Main.class
+com\oracle\jaeger\tracing\GreetService.class
+com\oracle\books\service\BookManager.class
+com\oracle\books\service\BookResourceService.class
