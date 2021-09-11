@@ -1,7 +1,9 @@
-
 app:
-  greeting: "Hello"
+  greeting: "Hello From SE-2"
+
+tracing:
+  service: "zipkin_tracing_service"
 
 server:
-  port: 8080
+  port: 8082
   host: 0.0.0.0

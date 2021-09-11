@@ -8,6 +8,7 @@ import io.helidon.health.HealthSupport;
 import io.helidon.health.checks.HealthChecks;
 import io.helidon.media.jsonp.JsonpSupport;
 import io.helidon.metrics.MetricsSupport;
+import io.helidon.tracing.TracerBuilder;
 import io.helidon.webserver.Routing;
 import io.helidon.webserver.WebServer;
 
@@ -44,6 +45,7 @@ public final class Main {
 
         WebServer server = WebServer.builder(createRouting(config))
                 .config(config.get("server"))
+                .tracer(TracerBuilder.create(config.get("tracing")).build())
                 .addMediaSupport(JsonpSupport.create())
                 .build();
 

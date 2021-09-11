@@ -17,6 +17,7 @@ import io.helidon.webserver.Routing;
 import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
 import io.helidon.webserver.Service;
+import io.opentracing.Span;
 
 /**
  * A simple service to greet you. Examples:
@@ -66,7 +67,18 @@ public class GreetService implements Service {
      * @param response the server response
      */
     private void getDefaultMessageHandler(ServerRequest request, ServerResponse response) {
-        sendResponse(response, "World");
+
+		 var spanBuilder = request.tracer()
+                .buildSpan("getDefaultMessageHandler");
+        request.spanContext().ifPresent(spanBuilder::asChildOf);
+        Span span = spanBuilder.start();
+
+
+          try {
+            sendResponse(response, "Bella ciao");
+        } finally {
+            span.finish();
+        }
     }
 
     /**
